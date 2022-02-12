@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from contextlib import nullcontext
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,AbstractUser
 from django.contrib.auth.models import PermissionsMixin
@@ -73,7 +75,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     address_line1 = models.CharField(max_length=100)
     address_line2 = models.CharField(blank=True, max_length=100)
-    profile_pic = models.ImageField(blank = True,upload_to = 'userprofile')
+    profile_pic = models.ImageField(blank = True, upload_to = 'userprofile')
     region = models.CharField(blank=True, max_length=20)
     city = models.CharField(blank=True, max_length=20)
 

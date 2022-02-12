@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-import django
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,12 +22,13 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dqcf61w$q!5#r5hp*jdqbrgjw24nn-uxvo4p3#__po(v7z@abl'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+DEBUG = config('DEBUG', default=True, cast=bool)
+
+ALLOWED_HOSTS = ['illu-commerce.herokuapp.com']
 
 
 # Application definition
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'user',
-    # 'admin_honeypot'
+    'admin_honeypot'
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
+
+SESSION_EXPIRE_SECONDS = 3600
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_TIMEOUT_REDIRECT = '/user/login'
+
+
 
 ROOT_URLCONF = 'e_commerce.urls'
 
@@ -152,12 +160,8 @@ MESSAGE_TAGS = {
 
 #SMTP configuration
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT =587
-EMAIL_HOST_USER ='abditrnh5901@gmail.com'
-EMAIL_HOST_PASSWORD = 't1r2n3h4'
-EMAIL_USE_TLS = True
-
-#delete it the following
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'aaa/suggestions')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS',cast=bool)

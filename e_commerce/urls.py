@@ -24,12 +24,9 @@ admin.site.site_header = 'Eccomerce Admin Panel'
 admin.site.index_title = 'models'
 
 urlpatterns = [
-
-
-
-    # path('admin/', include('admin_honeypot.urls', namespace = 'admin_honeypot')),
-    path('kaka/', admin.site.urls),
     path('', views.home, name='home'),
+    path('admin/', include('admin_honeypot.urls', namespace = 'admin_honeypot')),
+    path('kaka/', admin.site.urls),
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),
     path('user/', include('user.urls')),
